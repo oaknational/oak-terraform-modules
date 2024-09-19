@@ -47,6 +47,33 @@ variable "region" {
   default     = "europe-west2"
 }
 
+variable "indexes" {
+  description = <<EOD
+    Data indexes to be added to Firestore
+
+    collection = the Firestore connection
+
+    fields
+      path = the name of the field (sometimes referred to field_path)
+      asc  = the sort order for the field, defaults to ascending, set to false for descending
+
+    If no __name__ field is added __name__ ascending will be added by default
+  EOD
+  type = list(object({
+    collection = string
+    fields = list(object({
+      path = string
+      asc  = optional(bool, true)
+    }))
+  }))
+  default = []
+
+  validation {
+    condition     = alltrue([for i in var.indexes : length(i) != 1])
+    error_message = "Indexes should not contain only 1 field"
+  }
+}
+
 variable "enable_point_in_time_recovery" {
   description = "Whether or not to enable point in time recovery on the Firestore datastore"
   type        = bool
