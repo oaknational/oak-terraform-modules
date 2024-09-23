@@ -9,7 +9,35 @@ resource "google_firestore_database" "this" {
   concurrency_mode            = var.use_optimistic_concurrency ? "OPTIMISTIC" : "PESSIMISTIC"
   app_engine_integration_mode = "DISABLED"
 
-  point_in_time_recovery_enablement = var.enable_point_in_time_recovery ? "POINT_IN_TIME_RECOVERY_ENABLED" : "POINT_IN_TIME_RECOVERY_DISABLED"
+  point_in_time_recovery_enablement = lookup(var.backup, "point_in_time", false) ? "POINT_IN_TIME_RECOVERY_ENABLED" : "POINT_IN_TIME_RECOVERY_DISABLED"
+}
+
+locals {
+  weekly_backup_day_lookup = [
+    "SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"
+  ]
+}
+
+resource "google_firestore_backup_schedule" "this" {
+  count = contains(["d", "w"], var.backup.frequency) ? 1 : 0
+
+  database = google_firestore_database.this.name
+
+  retention = "${(60 * 60 * 24) * var.backup.retention}s"
+
+  dynamic "daily_recurrence" {
+    for_each = var.backup.frequency == "d" ? { day = true } : {}
+
+    content {}
+  }
+
+  dynamic "weekly_recurrence" {
+    for_each = var.backup.frequency == "w" ? { week = true } : {}
+
+    content {
+      day = local.weekly_backup_day_lookup[var.backup.day]
+    }
+  }
 }
 
 locals {
