@@ -1,0 +1,16 @@
+name: Terraform checks and linting
+
+on: [push]
+
+jobs:
+  terraform-lint-format:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run Terraform Action from oak-terraform-actions
+        uses: oaknational/oak-terraform-actions/actions/terraform-checks@main
+        with:
+          terraform_base_dir: modules
