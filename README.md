@@ -2,6 +2,7 @@
 
 ## Modules
 
+* [API](modules/gcp_api)
 * [Firestore](modules/gcp_firestore)
 
 ## Developing with modules
