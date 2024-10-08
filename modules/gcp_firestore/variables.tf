@@ -9,18 +9,13 @@ variable "name_parts" {
   nullable = false
 
   validation {
-    condition     = length(var.name_parts.domain) == 2
-    error_message = "Domain part of the name should be 2 chars"
+    condition     = can(regex("^[a-z]{2}$", var.name_parts.domain))
+    error_message = "Domain part of the name should be exactly 2 lowercase chars"
   }
 
   validation {
-    condition     = length(var.name_parts.region) == 3
-    error_message = "Region part of the name should be 3 chars"
-  }
-
-  validation {
-    condition     = can(regex("^[a-z]+$", var.name_parts.app))
-    error_message = "App part of the name should only contain lower case letters"
+    condition     = can(regex("^[a-z]{3}$", var.name_parts.region))
+    error_message = "Region part of the name should be exactly 3 lowercase chars"
   }
 
   validation {
