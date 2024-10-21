@@ -46,7 +46,18 @@ resource "google_cloudfunctions2_function" "this" {
     service_account_email = each.value.service_account_email
 
     environment_variables = {
-      for e in each.value.environment_variables : e.name => e.value
+      for e in concat(
+        each.value.environment_variables,
+        contains(
+          [for e in each.value.environment_variables : e.name],
+          "LOG_EXECUTION_ID"
+          ) ? [] : [
+          {
+            name  = "LOG_EXECUTION_ID",
+            value = true,
+          }
+        ]
+      ) : e.name => e.value
     }
   }
 }
