@@ -25,5 +25,12 @@ resource "google_sql_database_instance" "this" {
     insights_config {
       query_insights_enabled = true
     }
+
+    maintenance_window {
+      day  = 2 # Tuesday
+      hour = 3
+      # We want lower availability databases upgrading before higher...
+      update_track = var.high_availability ? "week5" : "stable" # Stable is week 2
+    }
   }
 }
