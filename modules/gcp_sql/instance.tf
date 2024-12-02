@@ -38,5 +38,12 @@ resource "google_sql_database_instance" "this" {
       # We want lower availability databases upgrading before higher...
       update_track = var.high_availability ? "week5" : "stable" # Stable is week 2
     }
+
+    password_validation_policy {
+      min_length                  = 15 # Per MoJ guidelines for admin level access
+      complexity                  = "COMPLEXITY_DEFAULT"
+      disallow_username_substring = true
+      enable_password_policy      = true
+    }
   }
 }
