@@ -19,6 +19,8 @@ resource "google_sql_database_instance" "this" {
     tier      = local.tier_lookup[var.memory]
     disk_type = "PD_SSD"
 
+    availability_type = var.high_availability ? "REGIONAL" : "ZONAL"
+
     # Insights are free so we might as well enable them
     insights_config {
       query_insights_enabled = true

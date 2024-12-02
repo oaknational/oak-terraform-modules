@@ -51,5 +51,10 @@ variable "memory" {
     condition     = contains([0.6, 1.7, 3.7, 8, 16], var.memory)
     error_message = "Invalid memory set. Only valid values are: 0.6, 1.7, 3.7, 8, 16"
   }
+}
 
+variable "high_availability" {
+  description = "Enable high availability for the instance"
+  type        = bool
+  default     = false
 }
