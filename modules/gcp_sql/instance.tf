@@ -28,6 +28,10 @@ resource "google_sql_database_instance" "this" {
       query_insights_enabled = true
     }
 
+    ip_configuration {
+      require_ssl = true
+    }
+
     maintenance_window {
       day  = 2 # Tuesday
       hour = 3
