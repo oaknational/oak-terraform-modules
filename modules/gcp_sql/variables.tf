@@ -53,6 +53,13 @@ variable "memory" {
   }
 }
 
+variable "deletion_protection" {
+  description = "While set to true the instance cannot be deleted"
+  type        = bool
+  nullable    = false
+  default     = true
+}
+
 variable "high_availability" {
   description = "Enable high availability for the instance"
   type        = bool

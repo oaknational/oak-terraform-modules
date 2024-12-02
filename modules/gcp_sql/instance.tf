@@ -15,6 +15,8 @@ resource "google_sql_database_instance" "this" {
   database_version = "POSTGRES_14"
   region           = var.region
 
+  deletion_protection = var.deletion_protection
+
   settings {
     tier      = local.tier_lookup[var.memory]
     disk_type = "PD_SSD"
