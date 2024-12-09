@@ -29,7 +29,9 @@ resource "google_sql_database_instance" "this" {
     }
 
     ip_configuration {
-      require_ssl = true
+      ipv4_enabled    = true
+      private_network = var.vpc_network_link
+      require_ssl     = true
     }
 
     maintenance_window {
