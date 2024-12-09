@@ -53,6 +53,12 @@ variable "memory" {
   }
 }
 
+variable "vpc_network_link" {
+  description = "The resource name of the VPC e.g. projects/{project}/global/networks/{vpc_name}"
+  type        = string
+  nullable    = false
+}
+
 variable "deletion_protection" {
   description = "While set to true the instance cannot be deleted"
   type        = bool
