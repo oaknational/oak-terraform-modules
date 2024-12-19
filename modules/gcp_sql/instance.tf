@@ -8,6 +8,10 @@ locals {
   }
 
   name = "${var.name_parts.domain}-${var.env}-${var.name_parts.app}-${var.name_parts.resource}"
+
+  authorized_network_records = {
+    for an in var.authorized_networks : an.cidr => an.description
+  }
 }
 
 resource "google_sql_database_instance" "this" {
@@ -32,6 +36,15 @@ resource "google_sql_database_instance" "this" {
       ipv4_enabled    = true
       private_network = var.vpc_network_link
       require_ssl     = true
+
+      dynamic "authorized_networks" {
+        for_each = local.authorized_network_records
+
+        content {
+          name  = authorized_networks.value
+          value = authorized_networks.key
+        }
+      }
     }
 
     maintenance_window {
