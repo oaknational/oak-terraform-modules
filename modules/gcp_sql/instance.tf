@@ -62,3 +62,17 @@ resource "google_sql_database_instance" "this" {
     }
   }
 }
+
+output "connection_data" {
+  value = {
+    external_ip = one([
+      for ip in resource.google_sql_database_instance.this.ip_address : ip.ip_address if ip.type == "PRIMARY"
+    ])
+    internal_ip = one([
+      for ip in resource.google_sql_database_instance.this.ip_address : ip.ip_address if ip.type == "PRIVATE"
+    ])
+    server_ca_cert = one([
+      for ca in resource.google_sql_database_instance.this.server_ca_cert : ca.cert
+    ])
+  }
+}
