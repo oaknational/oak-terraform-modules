@@ -53,6 +53,20 @@ variable "memory" {
   }
 }
 
+variable "authorized_networks" {
+  description = "Allowable IP ranges for connectivity"
+  type = list(object({
+    description = string
+    cidr        = string
+  }))
+  default = []
+
+  validation {
+    condition     = alltrue([for an in var.authorized_networks : can(cidrnetmask(an.cidr))])
+    error_message = "Invalid cidr found"
+  }
+}
+
 variable "vpc_network_link" {
   description = "The resource name of the VPC e.g. projects/{project}/global/networks/{vpc_name}"
   type        = string
