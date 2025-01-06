@@ -35,7 +35,7 @@ resource "google_sql_database_instance" "this" {
     ip_configuration {
       ipv4_enabled    = true
       private_network = var.vpc_network_link
-      require_ssl     = true
+      ssl_mode        = "ENCRYPTED_ONLY"
 
       dynamic "authorized_networks" {
         for_each = local.authorized_network_records
@@ -63,7 +63,7 @@ resource "google_sql_database_instance" "this" {
   }
 }
 
-output "connection_data" {
+output "ip_address" {
   value = {
     external_ip = one([
       for ip in resource.google_sql_database_instance.this.ip_address : ip.ip_address if ip.type == "PRIMARY"
@@ -71,8 +71,11 @@ output "connection_data" {
     internal_ip = one([
       for ip in resource.google_sql_database_instance.this.ip_address : ip.ip_address if ip.type == "PRIVATE"
     ])
-    server_ca_cert = one([
-      for ca in resource.google_sql_database_instance.this.server_ca_cert : ca.cert
-    ])
   }
+}
+
+output "server_ca_cert" {
+  value = one([
+    for ca in resource.google_sql_database_instance.this.server_ca_cert : ca.cert
+  ])
 }
