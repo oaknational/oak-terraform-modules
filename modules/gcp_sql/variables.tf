@@ -85,3 +85,10 @@ variable "high_availability" {
   type        = bool
   default     = false
 }
+
+variable "export_bucket" {
+  description = "A bucket the instance will have access to for exports"
+  type        = string
+  nullable    = true
+  default     = null
+}

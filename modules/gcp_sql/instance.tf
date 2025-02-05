@@ -64,3 +64,12 @@ resource "google_sql_database_instance" "this" {
     }
   }
 }
+
+resource "google_storage_bucket_iam_member" "this" {
+  for_each = toset(compact([var.export_bucket]))
+
+  bucket = each.key
+  role   = "roles/storage.objectAdmin"
+  member = "serviceAccount:${google_sql_database_instance.this.service_account_email_address}"
+}
+
