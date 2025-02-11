@@ -29,6 +29,27 @@ resource "google_sql_database_instance" "this" {
 
     availability_type = var.high_availability ? "REGIONAL" : "ZONAL"
 
+    dynamic "backup_configuration" {
+      for_each = toset((var.backup.backup_retention + var.backup.transaction_log_retention) > 0 ? [{}] : [])
+
+      content {
+        point_in_time_recovery_enabled = var.backup.transaction_log_retention > 0 ? true : false
+        transaction_log_retention_days = var.backup.transaction_log_retention > 0 ? var.backup.transaction_log_retention : null
+
+        enabled    = var.backup.backup_retention > 0 ? true : false
+        start_time = var.backup.backup_time
+
+        dynamic "backup_retention_settings" {
+          for_each = toset(var.backup.backup_retention > 0 ? [{}] : [])
+
+          content {
+            retained_backups = var.backup.backup_retention
+            retention_unit   = "COUNT"
+          }
+        }
+      }
+    }
+
     # Insights are free so we might as well enable them
     insights_config {
       query_insights_enabled = true
