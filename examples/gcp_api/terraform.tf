@@ -1,5 +1,5 @@
 terraform {
-  required_version = ">= 1.5.7"
+  required_version = ">= 1.9.5"
 
   required_providers {
     cloudflare = {
@@ -8,11 +8,11 @@ terraform {
     }
     google = {
       source  = "hashicorp/google"
-      version = "5.2.0"
+      version = "6.19.0"
     }
     google-beta = {
       source  = "hashicorp/google-beta"
-      version = "4.77.0"
+      version = "6.19.0"
     }
   }
 }
