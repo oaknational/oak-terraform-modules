@@ -92,3 +92,34 @@ variable "export_bucket" {
   nullable    = true
   default     = null
 }
+
+variable "backup" {
+  description = <<EOD
+    backup_retention          = The number of days backup to save (0 for no backups)
+    backup_time               = An optional start time for the backup (local time)
+    transaction_log_retention = Point in time recovery saves. 0 for off. Max 7 days
+  EOD
+
+  type = object({
+    backup_retention          = optional(number, 0)
+    backup_time               = optional(string, "19:00")
+    transaction_log_retention = optional(number, 0)
+  })
+  default = {}
+
+  validation {
+    condition     = var.backup.backup_retention >= 0 && var.backup.backup_retention < 366
+    error_message = "Backup retention must be between 0 and 365"
+  }
+
+
+  validation {
+    condition     = var.backup.transaction_log_retention >= 0 && var.backup.transaction_log_retention < 8
+    error_message = "Transaction log retention must be between 0 and 7"
+  }
+
+  validation {
+    condition     = can(regex("^(2[0-3]|[01]?[0-9]):([0-5]?[0-9])$", var.backup.backup_time))
+    error_message = "Transaction log retention must be between 0 and 7"
+  }
+}
