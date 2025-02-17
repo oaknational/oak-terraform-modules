@@ -10,6 +10,8 @@ resource "google_firestore_database" "this" {
   app_engine_integration_mode = "DISABLED"
 
   point_in_time_recovery_enablement = lookup(var.backup, "point_in_time", false) ? "POINT_IN_TIME_RECOVERY_ENABLED" : "POINT_IN_TIME_RECOVERY_DISABLED"
+  delete_protection_state           = var.env == "prod" ? "DELETE_PROTECTION_ENABLED" : "DELETE_PROTECTION_DISABLED"
+  deletion_policy                   = "DELETE"
 }
 
 locals {
