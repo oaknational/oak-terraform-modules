@@ -27,7 +27,8 @@ resource "google_sql_database_instance" "this" {
     tier      = local.tier_lookup[var.memory]
     disk_type = "PD_SSD"
 
-    availability_type = var.high_availability ? "REGIONAL" : "ZONAL"
+    availability_type           = var.high_availability ? "REGIONAL" : "ZONAL"
+    deletion_protection_enabled = var.deletion_protection
 
     dynamic "backup_configuration" {
       for_each = toset((var.backup.backup_retention + var.backup.transaction_log_retention) > 0 ? [{}] : [])
