@@ -1,4 +1,4 @@
-# Google Cloud Firestore
+# Google Cloud API & Gateway
 
 Deploys one or more Cloud run functions via an API gateway to a domain.
 
