@@ -54,3 +54,13 @@ module "example" {
   ...
 }
 ```
+
+## Release Workflow
+Once code is merged and you are ready to release,
+- git checkout main -> git pull
+- git tag vx.x.x
+- git push origin vx.x.x
+-In the repo, click `Releases` → Draft a new release.
+- In `choose a tag` , select the tag you just pushed (e.g vx.x.x)
+- Fill in the title and release notes
+- Click Publish release.
