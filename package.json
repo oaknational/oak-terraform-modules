@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "## Modules",
   "scripts": {
+    "commitlint-last": "echo \"$(git log -1 --pretty=format:'%s')\" | commitlint --verbose",
     "test": "echo \"Error: no test specified\" && exit 1",
     "release": "standard-version",
     "prepare": "husky"
