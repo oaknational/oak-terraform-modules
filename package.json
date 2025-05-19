@@ -1,0 +1,34 @@
+{
+  "name": "oak-terraform-modules",
+  "version": "1.0.0",
+  "description": "## Modules",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "release": "standard-version"
+  },
+  "standard-version": {
+    "tagPrefix": "v",
+    "bumpFiles": [
+      {
+        "filename": "package.json",
+        "type": "json"
+      }
+    ]
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
+    "standard-version": "^9.5.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oaknational/oak-terraform-modules.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/oaknational/oak-terraform-modules/issues"
+  },
+  "homepage": "https://github.com/oaknational/oak-terraform-modules#readme"
+}
