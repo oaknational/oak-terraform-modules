@@ -54,3 +54,50 @@ module "example" {
   ...
 }
 ```
+
+## Release Workflow
+
+### Commit Conventions
+We enforce Conventional Commits to drive automated tooling:
+
+Features: use `feat(scope): description`
+
+Bug fixes: use `fix(scope): description`
+
+Breaking changes: include a `!` after the type or a `BREAKING CHANGE:` footer, e.g.
+
+```
+feat(api)!: remove deprecated endpoint
+```
+ OR
+```
+feat(api): remove deprecated endpoint
+
+with a footer:
+BREAKING CHANGE: remove deprecated endpoint
+```
+
+### What the Release Script Does
+> To make sure it's executable run , `chmod +x scripts/release.sh`
+
+The `./scripts/release.sh` script automates the release preparation process by:
+
+1. Ensuring you're on a clean `main` branch.
+2. Creating a `release/vX.X.X` branch.
+3. Running [`standard-version`](https://github.com/conventional-changelog/standard-version) to:
+   - Bump the version in `package.json`
+   - Update `CHANGELOG.md`
+   - Commit and tag the release
+4. Pushing the release branch and tag
+5. Creating a GitHub Pull Request with the version bump
+
+> You don't need to manually edit `package.json` or `CHANGELOG.md`.
+
+### Using This Module in Downstream Repos
+
+Terraform modules should reference a **tag**:
+
+```hcl
+module "example" {
+  source = "github.com/oaknational/oak-terraform-modules//modules/example?ref=v1.2.0"
+}
