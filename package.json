@@ -1,0 +1,11 @@
+{
+  "devDependencies": {
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
+    "husky": "^9.1.7"
+  },
+  "scripts": {
+    "commitlint-last": "echo \"$(git log -1 --pretty=format:'%s')\" | commitlint --verbose",
+    "prepare": "husky"
+  }
+}
