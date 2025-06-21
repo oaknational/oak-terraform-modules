@@ -23,6 +23,17 @@ variable "domains" {
   description = "Custom domains"
   type        = list(string)
   default     = []
+
+  validation {
+    condition = alltrue([
+      for domain in var.domains :
+      can(regex("${var.cloudflare_zone_domain}$", domain))
+    ])
+    error_message = <<-EOT
+      Domain must end with '${var.cloudflare_zone_domain}'
+      Invalid domain(s):${join(",", [for domain in var.domains : "'${domain}'"])}
+      EOT
+  }
 }
 
 variable "environment_variables" {
@@ -86,4 +97,9 @@ variable "skew_protection" {
   description = "Defines how long Vercel keeps Skew Protection active"
   type        = string
   default     = null
+}
+
+variable "cloudflare_zone_domain" {
+  description = "Domain name for the zone"
+  type        = string
 }
