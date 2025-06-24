@@ -13,6 +13,7 @@ resource "vercel_project" "this" {
   ignore_command                   = var.ignore_command
   skew_protection                  = var.skew_protection
   protection_bypass_for_automation = var.protection_bypass_for_automation
+  output_directory                 = var.output_directory
 
   vercel_authentication = {
     deployment_type = var.deployment_type
