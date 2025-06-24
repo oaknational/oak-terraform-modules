@@ -87,6 +87,12 @@ variable "protection_bypass_for_automation" {
   default     = true
 }
 
+variable "output_directory" {
+  description = "The output directory of the project"
+  type        = string
+  default     = null
+}
+
 variable "root_directory" {
   description = "Path to project root within the repo"
   type        = string
