@@ -14,6 +14,49 @@ variable "build_type" {
   }
 }
 
+variable "custom_environments" {
+  description = "Custom environments"
+
+  type = list(object({
+    name   = string
+    domain = string
+  }))
+  default = []
+
+  validation {
+    condition = alltrue([
+      for env in var.custom_environments : can(regex("${var.cloudflare_zone_domain}$", env.domain))
+    ])
+    error_message = <<-EOT
+      Domain must end with '${var.cloudflare_zone_domain}'
+      Invalid domain(s):${join(",", [for env in var.custom_environments : "'${env.domain}'"])}
+      EOT
+  }
+}
+
+variable "custom_env_vars" {
+  description = "Custom environment environment variables"
+  type = list(object({
+    key                     = string
+    value                   = string
+    custom_environment_name = string
+  }))
+  default = []
+  validation {
+    condition = alltrue([
+      for cev in var.custom_env_vars :
+      contains([for ce in var.custom_environments : ce.name], cev.custom_environment_name)
+    ])
+    error_message = <<-EOT
+        Invalid environment name in custom_env_vars, custom environment name values must match existing custom environment names.
+        
+        Available environments: ${join(", ", [for ce in var.custom_environments : ce.name])}
+        Invalid references found in custom_env_vars: ${join(", ", distinct([for cev in var.custom_env_vars : cev.custom_environment_name if !contains([for ce in var.custom_environments : ce.name], cev.custom_environment_name)]))}
+
+EOT
+  }
+}
+
 variable "deployment_type" {
   description = "The deployment environment to protect."
   type        = string
