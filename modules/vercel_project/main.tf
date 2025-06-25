@@ -32,6 +32,7 @@ resource "vercel_project" "this" {
   framework                        = var.framework
   build_command                    = var.build_command
   ignore_command                   = var.ignore_command
+  install_command                  = var.install_command
   skew_protection                  = var.skew_protection
   protection_bypass_for_automation = var.protection_bypass_for_automation
   output_directory                 = var.output_directory

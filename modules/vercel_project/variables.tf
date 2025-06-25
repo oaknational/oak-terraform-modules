@@ -112,8 +112,15 @@ variable "git_repo" {
     error_message = "The git_repo must be in the format 'owner/repository' (e.g., 'oaknational/Oak-Web-Application')."
   }
 }
+
 variable "ignore_command" {
   description = "Command to determine if build should be skipped"
+  type        = string
+  default     = null
+}
+
+variable "install_command" {
+  description = "The install command for the project"
   type        = string
   default     = null
 }
