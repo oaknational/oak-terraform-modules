@@ -4,6 +4,27 @@ locals {
   normalized_repo = lower(replace(local.repo_only, "_", "-"))
 
   project_name = "${local.normalized_repo}-${var.build_type}"
+
+  all_domains = concat(
+    [for domain in var.domains : { name = domain }],
+    [for ce in var.custom_environments : {
+      name                    = ce.domain
+      custom_environment_name = ce.name
+    }]
+  )
+
+  custom_env_vars = [
+    for cev in var.custom_env_vars : {
+      key   = cev.key
+      value = cev.value
+      custom_environment_ids = [
+        vercel_custom_environment.this[cev.custom_environment_name].id
+      ]
+      sensitive = cev.sensitive
+    }
+  ]
+
+  all_env_vars = concat(var.environment_variables, local.custom_env_vars)
 }
 
 resource "vercel_project" "this" {
@@ -11,6 +32,7 @@ resource "vercel_project" "this" {
   framework                        = var.framework
   build_command                    = var.build_command
   ignore_command                   = var.ignore_command
+  install_command                  = var.install_command
   skew_protection                  = var.skew_protection
   protection_bypass_for_automation = var.protection_bypass_for_automation
   output_directory                 = var.output_directory
@@ -28,20 +50,22 @@ resource "vercel_project" "this" {
 }
 
 resource "vercel_project_domain" "this" {
-  for_each = toset(var.domains)
+  for_each = { for domain in local.all_domains : domain.name => domain }
 
-  project_id = vercel_project.this.id
-  domain     = each.key
+  project_id            = vercel_project.this.id
+  domain                = each.key
+  custom_environment_id = try(vercel_custom_environment.this[each.value.custom_environment_name].id, null)
 }
 
 resource "vercel_project_environment_variables" "this" {
   project_id = vercel_project.this.id
   variables = [
-    for ev in var.environment_variables : {
-      key       = ev.key
-      value     = ev.value
-      target    = ev.target
-      sensitive = ev.sensitive
+    for ev in local.all_env_vars : {
+      key                    = ev.key
+      value                  = ev.value
+      sensitive              = ev.sensitive
+      target                 = try(ev.target, null)
+      custom_environment_ids = try(ev.custom_environment_ids, null)
     }
   ]
 }
@@ -52,4 +76,16 @@ resource "vercel_deployment" "this" {
   project_id = vercel_project.this.id
   ref        = var.production_branch
   production = false
+}
+
+resource "vercel_custom_environment" "this" {
+  for_each    = { for env in var.custom_environments : env.name => env }
+  project_id  = vercel_project.this.id
+  name        = each.value.name
+  description = "Custom environment for ${each.value.name}"
+
+  branch_tracking = {
+    pattern = var.production_branch
+    type    = "equals"
+  }
 }
