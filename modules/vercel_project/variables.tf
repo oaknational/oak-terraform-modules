@@ -103,6 +103,12 @@ variable "framework" {
   default     = "nextjs"
 }
 
+variable "git_branch" {
+  description = "Git branch to link to the project domain"
+  type        = string
+  default     = null
+}
+
 variable "git_repo" {
   description = "Git repository URL"
   type        = string
