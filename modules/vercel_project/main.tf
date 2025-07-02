@@ -20,7 +20,6 @@ locals {
       custom_environment_ids = [
         vercel_custom_environment.this[cev.custom_environment_name].id
       ]
-      sensitive = cev.sensitive
     }
   ]
 
@@ -63,7 +62,6 @@ resource "vercel_project_environment_variables" "this" {
     for ev in local.all_env_vars : {
       key                    = ev.key
       value                  = ev.value
-      sensitive              = ev.sensitive
       target                 = try(ev.target, null)
       custom_environment_ids = try(ev.custom_environment_ids, null)
     }
