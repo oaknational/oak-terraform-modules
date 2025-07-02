@@ -54,6 +54,7 @@ resource "vercel_project_domain" "this" {
   project_id            = vercel_project.this.id
   domain                = each.key
   custom_environment_id = try(vercel_custom_environment.this[each.value.custom_environment_name].id, null)
+  git_branch            = var.git_branch
 }
 
 resource "vercel_project_environment_variables" "this" {
