@@ -20,7 +20,6 @@ locals {
       custom_environment_ids = [
         vercel_custom_environment.this[cev.custom_environment_name].id
       ]
-      sensitive = cev.sensitive
     }
   ]
 
@@ -55,6 +54,7 @@ resource "vercel_project_domain" "this" {
   project_id            = vercel_project.this.id
   domain                = each.key
   custom_environment_id = try(vercel_custom_environment.this[each.value.custom_environment_name].id, null)
+  git_branch            = var.git_branch
 }
 
 resource "vercel_project_environment_variables" "this" {
@@ -63,7 +63,6 @@ resource "vercel_project_environment_variables" "this" {
     for ev in local.all_env_vars : {
       key                    = ev.key
       value                  = ev.value
-      sensitive              = ev.sensitive
       target                 = try(ev.target, null)
       custom_environment_ids = try(ev.custom_environment_ids, null)
     }
