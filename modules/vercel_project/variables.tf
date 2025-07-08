@@ -40,6 +40,7 @@ variable "custom_env_vars" {
     key                     = string
     value                   = string
     custom_environment_name = string
+    sensitive               = optional(bool, false)
   }))
   default = []
   validation {

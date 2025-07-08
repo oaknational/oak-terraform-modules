@@ -14,13 +14,10 @@ locals {
   )
 
   custom_env_vars = [
-    for cev in var.custom_env_vars : {
-      key   = cev.key
-      value = cev.value
-      custom_environment_ids = [
+    for cev in var.custom_env_vars : merge(cev,
+      { custom_environment_ids = [
         vercel_custom_environment.this[cev.custom_environment_name].id
-      ]
-    }
+    ] })
   ]
 
   all_env_vars = concat(var.environment_variables, local.custom_env_vars)
@@ -63,6 +60,7 @@ resource "vercel_project_environment_variables" "this" {
     for ev in local.all_env_vars : {
       key                    = ev.key
       value                  = ev.value
+      sensitive              = ev.sensitive
       target                 = try(ev.target, null)
       custom_environment_ids = try(ev.custom_environment_ids, null)
     }
