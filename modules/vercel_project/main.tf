@@ -24,14 +24,15 @@ locals {
 }
 
 resource "vercel_project" "this" {
-  name                             = local.project_name
-  framework                        = var.framework
-  build_command                    = var.build_command
-  ignore_command                   = var.ignore_command
-  install_command                  = var.install_command
-  skew_protection                  = var.skew_protection
-  protection_bypass_for_automation = var.protection_bypass_for_automation
-  output_directory                 = var.output_directory
+  name                                              = local.project_name
+  automatically_expose_system_environment_variables = var.expose_system_variables
+  framework                                         = var.framework
+  build_command                                     = var.build_command
+  ignore_command                                    = var.ignore_command
+  install_command                                   = var.install_command
+  skew_protection                                   = var.skew_protection
+  protection_bypass_for_automation                  = var.protection_bypass_for_automation
+  output_directory                                  = var.output_directory
 
   vercel_authentication = {
     deployment_type = var.deployment_type

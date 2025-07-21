@@ -98,6 +98,11 @@ variable "environment_variables" {
   default = []
 }
 
+variable "expose_system_variables" {
+  type    = bool
+  default = true
+}
+
 variable "framework" {
   description = "Framework for the project (e.g. nextjs, nodejs)"
   type        = string
