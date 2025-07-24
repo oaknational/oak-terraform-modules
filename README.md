@@ -5,6 +5,7 @@
 * [API](modules/gcp_api)
 * [Firestore](modules/gcp_firestore)
 * [SQL](modules/gcp_sql)
+* [Vercel Project](modules/vercel_project)
 
 ## Developing with modules
 
