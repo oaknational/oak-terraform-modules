@@ -3,8 +3,10 @@
 ## Modules
 
 * [API](modules/gcp_api)
+* [Cloud Run Job](modules/gcp_job)
 * [Firestore](modules/gcp_firestore)
 * [SQL](modules/gcp_sql)
+* [Vercel Project](modules/vercel_project)
 
 ## Developing with modules
 
