@@ -56,6 +56,8 @@ resource "vercel_project_domain" "this" {
 }
 
 resource "vercel_project_environment_variables" "this" {
+  count = length(local.all_env_vars) > 0 ? 1 : 0
+
   project_id = vercel_project.this.id
   variables = [
     for ev in local.all_env_vars : {
