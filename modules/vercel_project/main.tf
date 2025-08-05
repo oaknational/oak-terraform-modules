@@ -21,6 +21,15 @@ locals {
   ]
 
   all_env_vars = concat(var.environment_variables, local.custom_env_vars)
+
+  detectify_ips = ["52.17.9.21", "52.17.98.131"]
+
+  bypass_rules = var.detectify_bypass_domain != null ? [
+    for ip in local.detectify_ips : {
+      domain    = var.detectify_bypass_domain
+      source_ip = ip
+    }
+  ] : []
 }
 
 resource "vercel_project" "this" {
@@ -88,4 +97,12 @@ resource "vercel_custom_environment" "this" {
     pattern = var.production_branch
     type    = "equals"
   }
+}
+
+resource "vercel_firewall_bypass" "this" {
+  for_each = { for rule in local.bypass_rules : "${rule.domain}-${rule.source_ip}" => rule }
+
+  project_id = vercel_project.this.id
+  source_ip  = each.value.source_ip
+  domain     = each.value.domain
 }
