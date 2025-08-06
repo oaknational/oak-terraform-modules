@@ -14,6 +14,12 @@ variable "build_type" {
   }
 }
 
+variable "detectify_bypass_domain" {
+  type        = string
+  default     = null
+  description = "The domain to bypass the firewall for Detectify scans."
+}
+
 variable "custom_environments" {
   description = "Custom environments"
 
