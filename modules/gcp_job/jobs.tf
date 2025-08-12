@@ -25,8 +25,8 @@ resource "google_cloud_run_v2_job" "this" {
 
         resources {
           limits = {
-            cpu    = "1000m"
-            memory = "1024Mi"
+            cpu    = var.cpu_allocation
+            memory = "${var.memory_allocation}Gi"
           }
         }
       }
