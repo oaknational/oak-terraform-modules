@@ -23,6 +23,51 @@ variable "name_parts" {
   }
 }
 
+variable "cpu_allocation" {
+  description = "The number of vCPUs allocated to the job (1, 2, 4, 6, or 8)"
+  type        = number
+  nullable    = false
+  default     = 1
+
+  validation {
+    condition     = contains([1, 2, 4, 6, 8], var.cpu_allocation)
+    error_message = "CPU allocation must be one of: 1, 2, 4, 6, 8."
+  }
+}
+
+variable "memory_allocation" {
+  description = "Memory allocation in Gi (0.5 or whole numbers between 1-32)"
+  type        = number
+  nullable    = false
+  default     = 1
+
+  validation {
+    condition = (
+      (var.memory_allocation == 0.5 ||
+        (var.memory_allocation >= 1 &&
+          var.memory_allocation <= 32 &&
+      floor(var.memory_allocation) == var.memory_allocation))
+    )
+    error_message = "Memory allocation must be 0.5 or whole numbers between 1-32"
+  }
+
+  validation {
+    condition = (
+      (var.memory_allocation < 4 || var.cpu_allocation >= 2) &&
+      (var.memory_allocation < 8 || var.cpu_allocation >= 4) &&
+      (var.memory_allocation < 16 || var.cpu_allocation >= 6) &&
+      (var.memory_allocation < 24 || var.cpu_allocation >= 8)
+    )
+    error_message = <<-EOT
+    Memory allocation must respect CPU requirements:
+    More than 4 GiB needs 2vCPU,
+    More than 8 GiB needs 4vCPU,
+    More than 16 GiB needs 6vCPU,
+    More than 24 GiB needs 8vCPU.
+    EOT
+  }
+}
+
 variable "env" {
   description = "The environment"
   type        = string
