@@ -64,11 +64,6 @@ EOT
   }
 }
 
-variable "deployment_type" {
-  description = "The deployment environment to protect."
-  type        = string
-}
-
 variable "domains" {
   description = "Custom domains"
   type        = list(string)
@@ -147,6 +142,17 @@ variable "production_branch" {
   description = "Branch name that triggers production deploys"
   type        = string
   default     = "main"
+}
+
+variable "project_visibility" {
+  description = "Can be either private (all domains are behind login) or public (custom domains are publicly available)"
+  type        = string
+  default     = "private"
+
+  validation {
+    condition     = contains(["private", "public"], var.project_visibility)
+    error_message = "Project visibility must be either 'private' or 'public'."
+  }
 }
 
 variable "protection_bypass_for_automation" {
