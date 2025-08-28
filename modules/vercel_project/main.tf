@@ -5,6 +5,8 @@ locals {
 
   project_name = "${local.normalized_repo}-${var.build_type}"
 
+  deployment_type = var.project_visibility == "private" ? "all_deployments" : "standard_protection_new"
+
   all_domains = concat(
     [for domain in var.domains : { name = domain }],
     [for ce in var.custom_environments : {
@@ -40,11 +42,13 @@ resource "vercel_project" "this" {
   ignore_command                                    = var.ignore_command
   install_command                                   = var.install_command
   skew_protection                                   = var.skew_protection
+  preview_deployments_disabled                      = true
   protection_bypass_for_automation                  = var.protection_bypass_for_automation
   output_directory                                  = var.output_directory
 
+
   vercel_authentication = {
-    deployment_type = var.deployment_type
+    deployment_type = local.deployment_type
   }
 
   root_directory = var.root_directory
