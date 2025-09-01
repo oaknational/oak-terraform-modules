@@ -42,7 +42,6 @@ resource "vercel_project" "this" {
   ignore_command                                    = var.ignore_command
   install_command                                   = var.install_command
   skew_protection                                   = var.skew_protection
-  preview_deployments_disabled                      = true
   protection_bypass_for_automation                  = var.protection_bypass_for_automation
   output_directory                                  = var.output_directory
 
