@@ -102,13 +102,24 @@ variable "environment_variables" {
   default  = []
 }
 
-variable "service_account_email" {
-  description = "The email of the service account to use when running the job"
+variable "job_service_account_email" {
+  description = "The email of the service account used to run the Cloud Run job"
   type        = string
   nullable    = false
 
   validation {
-    condition     = can(regex("^[a-z-]+@[a-z-]+.iam.gserviceaccount.com$", var.service_account_email))
+    condition     = can(regex("^[a-z-]+@[a-z-]+.iam.gserviceaccount.com$", var.job_service_account_email))
+    error_message = "Service account is not a valid GCP account"
+  }
+}
+
+variable "scheduler_service_account_email" {
+  description = "The email of the service account used by Cloud Scheduler to authenticate and invoke the job"
+  type        = string
+  nullable    = false
+
+  validation {
+    condition     = can(regex("^[a-z-]+@[a-z-]+.iam.gserviceaccount.com$", var.scheduler_service_account_email))
     error_message = "Service account is not a valid GCP account"
   }
 }

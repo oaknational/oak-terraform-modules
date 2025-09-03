@@ -17,8 +17,10 @@ module "instance" {
   env = "prod"
 
   docker_image = "europe-west2-docker.pkg.dev/example-org/xx/demo:v0.0.0"
-
-  service_account_email = example@example-org.iam.gserviceaccount.com
+  
+  job_service_account_email = example@example-org.iam.gserviceaccount.com
+  
+  scheduler_service_account_email = example@example-org.iam.gserviceaccount.com
 
   env_vars = [
     {
