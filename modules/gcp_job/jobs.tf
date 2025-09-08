@@ -30,7 +30,8 @@ resource "google_cloud_run_v2_job" "this" {
           }
         }
       }
-      timeout = "600s"
+      timeout         = "600s"
+      service_account = var.job_service_account_email
     }
   }
 }
@@ -57,7 +58,7 @@ resource "google_cloud_scheduler_job" "this" {
       ":run"
     ])
     oauth_token {
-      service_account_email = var.service_account_email
+      service_account_email = var.scheduler_service_account_email
       scope                 = "https://www.googleapis.com/auth/cloud-platform"
     }
   }
