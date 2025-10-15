@@ -109,3 +109,11 @@ resource "vercel_firewall_bypass" "this" {
   source_ip  = each.value.source_ip
   domain     = each.value.domain
 }
+
+resource "vercel_project_deployment_retention" "this" {
+  project_id            = vercel_project.this.id
+  expiration_preview    = "1m"
+  expiration_production = "1m"
+  expiration_canceled   = "1m"
+  expiration_errored    = "1m"
+}
