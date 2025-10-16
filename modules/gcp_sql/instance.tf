@@ -51,6 +51,14 @@ resource "google_sql_database_instance" "this" {
       }
     }
 
+    dynamic "database_flags" {
+      for_each = var.database_flags
+      content {
+        name  = database_flags.value.name
+        value = database_flags.value.value
+      }
+    }
+
     # Insights are free so we might as well enable them
     insights_config {
       query_insights_enabled = true
