@@ -67,6 +67,15 @@ variable "authorized_networks" {
   }
 }
 
+variable "database_flags" {
+  description = "Database flags to set on the Cloud SQL instance."
+  type = list(object({
+    name  = string
+    value = string
+  }))
+  default = []
+}
+
 variable "vpc_network_link" {
   description = "The resource name of the VPC e.g. projects/{project}/global/networks/{vpc_name}"
   type        = string
