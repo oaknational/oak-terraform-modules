@@ -4,6 +4,22 @@ variable "build_command" {
   default     = null
 }
 
+variable "build_machine_type" {
+  description = <<-EOT
+  The build machine type for the project. Acceptable values are "standard", "enhanced", or "turbo".
+  Note: It is not backward-compatible. Once it is set to "enhanced" or "turbo", it can't be reverted to "standard" using Terraform as
+  the Vercel provider only supports "enhanced" and "turbo" values.
+  EOT
+
+  type    = string
+  default = "standard"
+
+  validation {
+    condition     = contains(["standard", "enhanced", "turbo"], var.build_machine_type)
+    error_message = "Build machine type must be one of: standard, enhanced, turbo. "
+  }
+}
+
 variable "build_type" {
   description = "Suffix to append to vercel project name (e.g. 'website', 'storybook')"
   type        = string
