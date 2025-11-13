@@ -7,6 +7,9 @@ locals {
 
   deployment_type = var.project_visibility == "private" ? "all_deployments" : "standard_protection_new"
 
+  #converts standard to null as it's the default value in Vercel API
+  build_machine_type_to_use = var.build_machine_type == "standard" ? null : var.build_machine_type
+
   all_domains = concat(
     [for domain in var.domains : { name = domain }],
     [for ce in var.custom_environments : {
@@ -42,8 +45,10 @@ resource "vercel_project" "this" {
   ignore_command                                    = var.ignore_command
   install_command                                   = var.install_command
   skew_protection                                   = var.skew_protection
+  prioritise_production_builds                      = true
   protection_bypass_for_automation                  = var.protection_bypass_for_automation
   output_directory                                  = var.output_directory
+  build_machine_type                                = local.build_machine_type_to_use
 
 
   vercel_authentication = {
