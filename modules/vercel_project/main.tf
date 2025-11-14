@@ -10,6 +10,8 @@ locals {
   #converts standard to null as it's the default value in Vercel API
   build_machine_type_to_use = var.build_machine_type == "standard" ? null : var.build_machine_type
 
+  framework = var.framework == "other" ? null : var.framework
+
   all_domains = concat(
     [for domain in var.domains : { name = domain }],
     [for ce in var.custom_environments : {
@@ -40,7 +42,7 @@ locals {
 resource "vercel_project" "this" {
   name                                              = local.project_name
   automatically_expose_system_environment_variables = var.expose_system_variables
-  framework                                         = var.framework
+  framework                                         = local.framework
   build_command                                     = var.build_command
   ignore_command                                    = var.ignore_command
   install_command                                   = var.install_command
