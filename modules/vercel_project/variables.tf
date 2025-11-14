@@ -121,9 +121,18 @@ variable "expose_system_variables" {
 }
 
 variable "framework" {
-  description = "Framework for the project (e.g. nextjs, nodejs)"
+  description = <<-EOT
+    The framework preset used for the project. Acceptable values are "nextjs", "storybook", or "other".
+    Note: Use "other" when your project doesn't use a specific framework preset.
+    This allows Vercel to auto-detect the framework or use no preset at all.
+  EOT
   type        = string
   default     = "nextjs"
+
+  validation {
+    condition     = contains(["nextjs", "storybook", "other"], var.framework)
+    error_message = "Framework must be one of: nextjs, storybook, other."
+  }
 }
 
 variable "git_branch" {
