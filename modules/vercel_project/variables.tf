@@ -36,6 +36,12 @@ variable "detectify_bypass_domain" {
   description = "The domain to bypass the firewall for Detectify scans."
 }
 
+variable "create_initial_deployment" {
+  description = "Whether to create an initial deployment after project creation"
+  type        = bool
+  default     = false
+}
+
 variable "custom_environments" {
   description = "Custom environments"
 

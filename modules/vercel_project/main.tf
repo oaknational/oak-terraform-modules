@@ -92,9 +92,11 @@ resource "vercel_project_environment_variables" "this" {
 resource "vercel_deployment" "this" {
   depends_on = [vercel_project_environment_variables.this]
 
+  count      = var.create_initial_deployment ? 1 : 0
   project_id = vercel_project.this.id
   ref        = var.production_branch
   production = false
+
 }
 
 resource "vercel_custom_environment" "this" {
