@@ -37,6 +37,10 @@ locals {
       source_ip = ip
     }
   ] : []
+
+  options_allowlist_obj = var.options_allowlist_paths == null ? null : {
+    paths = [for p in var.options_allowlist_paths : { value = p }]
+  }
 }
 
 resource "vercel_project" "this" {
@@ -49,9 +53,9 @@ resource "vercel_project" "this" {
   skew_protection                                   = var.skew_protection
   prioritise_production_builds                      = true
   protection_bypass_for_automation                  = var.protection_bypass_for_automation
+  options_allowlist                                 = local.options_allowlist_obj
   output_directory                                  = var.output_directory
   build_machine_type                                = local.build_machine_type_to_use
-
 
   vercel_authentication = {
     deployment_type = local.deployment_type

@@ -163,6 +163,19 @@ variable "install_command" {
   default     = null
 }
 
+variable "options_allowlist_paths" {
+  description = "List of paths to disable Deployment Protection for CORS preflight OPTIONS requests."
+  type        = list(string)
+  default     = null
+
+  validation {
+    condition = var.options_allowlist_paths == null || alltrue([
+      for path in var.options_allowlist_paths : startswith(path, "/")
+    ])
+    error_message = "Paths must start with '/'."
+  }
+}
+
 variable "production_branch" {
   description = "Branch name that triggers production deploys"
   type        = string

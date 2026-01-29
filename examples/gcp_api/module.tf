@@ -54,7 +54,7 @@ module "hosting" {
     entrypoint_map = [
       {
         variable   = "get_function_url", # As defined in the open api config yaml
-        entrypoint = "getFunction",  # A function entrypoint name from above
+        entrypoint = "getFunction",      # A function entrypoint name from above
       },
       {
         variable   = "put_function_url",
