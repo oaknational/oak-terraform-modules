@@ -18,7 +18,7 @@ locals {
 
 resource "google_sql_database_instance" "this" {
   name             = local.name
-  database_version = "POSTGRES_14"
+  database_version = var.use_pg_18 ? "POSTGRES_18" : "POSTGRES_14"
   region           = var.region
 
   deletion_protection = var.deletion_protection

@@ -132,3 +132,10 @@ variable "backup" {
     error_message = "Transaction log retention must be between 0 and 7"
   }
 }
+
+variable "use_pg_18" {
+  description = "Use Postgres 18 (default is 14). Only intended for use while we migrate to 18."
+  type        = bool
+  nullable    = true
+  default     = false
+}
