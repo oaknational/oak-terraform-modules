@@ -25,6 +25,7 @@ resource "google_sql_database_instance" "this" {
 
   settings {
     tier      = local.tier_lookup[var.memory]
+    edition   = var.use_pg_18 ? "ENTERPRISE" : null
     disk_type = "PD_SSD"
 
     availability_type           = var.high_availability ? "REGIONAL" : "ZONAL"
