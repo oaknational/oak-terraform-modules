@@ -108,7 +108,7 @@ resource "vercel_custom_environment" "this" {
   description = "Custom environment for ${each.value.name}"
 
   branch_tracking = {
-    pattern = var.production_branch
+    pattern = each.value.branch_name != null ? each.value.branch_name : each.value.name
     type    = "equals"
   }
 }

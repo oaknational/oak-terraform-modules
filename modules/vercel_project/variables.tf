@@ -40,8 +40,9 @@ variable "custom_environments" {
   description = "Custom environments"
 
   type = list(object({
-    name   = string
-    domain = string
+    name        = string
+    domain      = string
+    branch_name = optional(string)
   }))
   default = []
 
