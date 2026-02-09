@@ -170,7 +170,7 @@ variable "options_allowlist_paths" {
   default     = null
 
   validation {
-    condition = var.options_allowlist_paths == null || alltrue([
+    condition = var.options_allowlist_paths == null ? true : alltrue([
       for path in var.options_allowlist_paths : startswith(path, "/")
     ])
     error_message = "Paths must start with '/'."
