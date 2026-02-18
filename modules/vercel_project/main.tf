@@ -99,6 +99,10 @@ resource "vercel_deployment" "this" {
   project_id = vercel_project.this.id
   ref        = var.production_branch
   production = false
+
+  lifecycle {
+    ignore_changes = all
+  }
 }
 
 resource "vercel_custom_environment" "this" {
