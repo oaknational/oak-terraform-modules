@@ -19,7 +19,7 @@ locals {
 resource "google_cloudfunctions2_function" "this" {
   for_each = local.function_records
 
-  name        = "${var.name_parts.domain}-${var.env}-${var.name_parts.region}-${var.name_parts.app}-${lower(each.value.entrypoint)}"
+  name        = "${var.name_parts.domain}-${var.env}-${var.name_parts.region}-${var.name_parts.app}-${lower(replace(each.value.entrypoint, "_", "-"))}"
   location    = var.google_cloud_region
   description = "The API endpint for ${var.env} ${join(" ", split("-", var.name_parts.app))}, ${each.key}"
 
