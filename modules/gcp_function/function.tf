@@ -1,6 +1,18 @@
 data "google_project" "current" {}
 
 locals {
+  secrets = { for s in var.function.secrets : s.env_name => s.secret_name }
+}
+
+data "google_secret_manager_secret" "secrets" {
+  for_each = local.secrets
+
+  project   = data.google_project.current.project_id
+  secret_id = each.value
+}
+
+
+locals {
   memory_lookup = [
     "128M",
     "256M",
@@ -56,7 +68,19 @@ resource "google_cloudfunctions2_function" "this" {
         ]
       ) : e.name => e.value
     }
+
+    dynamic "secret_environment_variables" {
+      for_each = local.secrets
+
+      content {
+        key        = secret_environment_variables.key
+        project_id = data.google_project.current.project_id
+        secret     = data.google_secret_manager_secret.secrets[secret_environment_variables.key].secret_id
+        version    = "latest"
+      }
+    }
   }
+
 }
 
 data "google_iam_policy" "all_users" {
