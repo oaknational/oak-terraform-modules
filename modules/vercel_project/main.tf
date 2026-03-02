@@ -69,7 +69,7 @@ resource "vercel_project" "this" {
   }
 
   resource_config = {
-    function_default_regions = var.function_default_regions
+    function_default_regions = ["lhr1"] // London
   }
 }
 
