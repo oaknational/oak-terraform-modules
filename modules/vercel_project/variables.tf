@@ -222,3 +222,9 @@ variable "cloudflare_zone_domain" {
   description = "Domain name for the zone"
   type        = string
 }
+
+variable "function_default_regions" {
+  description = "The default regions for Vercel Serverless Functions. Must be an array of valid region identifiers. See https://vercel.com/docs/regions"
+  type        = list(string)
+  default     = ["lhr1"] // London
+}
