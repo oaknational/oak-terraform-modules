@@ -153,7 +153,7 @@ variable "environment_variables" {
 }
 
 variable "secrets" {
-  description = "List of secrets to be injected as environment variables"
+  description = "List of secrets to be injected as environment variables from Google Secret Manager"
   type = list(object({
     env_name    = string
     secret_name = string
