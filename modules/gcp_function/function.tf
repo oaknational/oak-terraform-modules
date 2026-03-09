@@ -44,9 +44,9 @@ resource "google_cloudfunctions2_function" "this" {
   }
 
   service_config {
-    max_instance_count = var.max_instance_count
-    available_memory   = local.memory_lookup[var.available_memory_pwr]
-    timeout_seconds    = var.timeout_seconds
+    max_instance_count               = var.max_instance_count
+    available_memory                 = local.memory_lookup[var.available_memory_pwr]
+    timeout_seconds                  = var.timeout_seconds
     available_cpu                    = var.available_cpu == 0 ? null : var.available_cpu
     max_instance_request_concurrency = var.max_request_concurrency
 
@@ -59,7 +59,7 @@ resource "google_cloudfunctions2_function" "this" {
         contains(
           [for e in var.environment_variables : e.name],
           "LOG_EXECUTION_ID"
-        ) ? [] : [
+          ) ? [] : [
           {
             name  = "LOG_EXECUTION_ID",
             value = true,
