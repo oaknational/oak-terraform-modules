@@ -72,7 +72,18 @@ variable "source_object" {
 }
 
 variable "available_memory_pwr" {
-  description = "The memory allocation calculated as 2^x * 128 in MB (0=128MB, 1=256MB, ..., 8=32GB)"
+  description = <<EOD
+    The memory allocation calculated as 2^x * 128 in MB (or MiB, Google is not clear)
+          0 = 128 MB
+          1	= 256 MB
+          2	= 512 MB
+          3	= 1 GB
+          4	= 2 GB
+          5	= 4 GB
+          6	= 8 GB
+          7	= 16 GB
+          8	= 32 GB
+  EOD
   type        = number
   default     = 1
   validation {
@@ -82,7 +93,7 @@ variable "available_memory_pwr" {
 }
 
 variable "available_cpu" {
-  description = "The number of CPUs assigned to the function. If 0, calculates based on memory allocation"
+  description = "The number of CPUs assigned to the function. If missed or 0, calculates based on memory allocation"
   type        = number
   default     = 0
 }
