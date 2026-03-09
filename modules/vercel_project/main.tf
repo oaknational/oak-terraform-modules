@@ -67,6 +67,10 @@ resource "vercel_project" "this" {
     repo              = var.git_repo
     production_branch = var.production_branch
   }
+
+  resource_config = {
+    function_default_regions = ["lhr1"] // London
+  }
 }
 
 resource "vercel_project_domain" "this" {
