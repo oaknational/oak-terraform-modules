@@ -19,20 +19,24 @@ module "example_api" {
   
   function_source_bucket = "example-code-storage-bucket"
 
-  function = {
-      entrypoint    = "example_function"
-      runtime       = "nodejs20"
-      source_object = "example/api.zip" 
-      
-      service_account_email = "example-api@example-project.iam.gserviceaccount.com"
+  entrypoint    = "example_function"
+  runtime       = "nodejs20"
+  source_object = "example/api.zip" 
+  
+  service_account_email = "example-api@example-project.iam.gserviceaccount.com"
 
-      environment_variables = [
-        {
-          name  = "DATABASE_URL",
-          value = "db.example.com",
-        },
-      ]
-    }  
-  }
+  environment_variables = [
+    {
+      name  = "DATABASE_URL",
+      value = "db.example.com",
+    },
+  ]
+
+  secrets = [
+    {
+      env_name    = "ENV_VAR_SECRET_TOKEN"
+      secret_name = "google-secret-manager-secret-to-inject"
+    }
+  ]
 }
 ```
