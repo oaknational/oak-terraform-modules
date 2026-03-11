@@ -1,4 +1,5 @@
 resource "google_firestore_database" "this" {
+  project = var.project_id
   name = join("-", [
     var.name_parts.domain, var.env, var.name_parts.region, var.name_parts.app, var.name_parts.resource
   ])
@@ -22,6 +23,8 @@ locals {
 
 resource "google_firestore_backup_schedule" "this" {
   count = contains(["d", "w"], var.backup.frequency) ? 1 : 0
+
+  project = var.project_id
 
   database = google_firestore_database.this.name
 
