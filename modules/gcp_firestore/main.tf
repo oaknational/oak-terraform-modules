@@ -54,6 +54,8 @@ locals {
 resource "google_firestore_index" "this" {
   for_each = local.index_records
 
+  project = var.project_id
+
   database   = google_firestore_database.this.name
   collection = each.value.collection
 
