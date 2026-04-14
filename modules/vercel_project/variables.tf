@@ -98,6 +98,12 @@ variable "domains" {
   }
 }
 
+variable "enable_sentry" {
+  description = "Whether to create a Sentry project"
+  type        = bool
+  default     = false
+}
+
 variable "environment_variables" {
   description = <<-EOT
     List of environment variable objects.
@@ -114,6 +120,14 @@ variable "environment_variables" {
     sensitive = optional(bool, false)
   }))
   default = []
+
+  validation {
+    condition = !var.enable_sentry || !anytrue([
+      for ev in var.environment_variables :
+      contains(["SENTRY_DSN", "SENTRY_ENVIRONMENT"], ev.key)
+    ])
+    error_message = "SENTRY_DSN and SENTRY_ENVIRONMENT are managed automatically when enable_sentry is true. Remove them from environment_variables."
+  }
 }
 
 variable "expose_system_variables" {
@@ -210,6 +224,34 @@ variable "root_directory" {
   description = "Path to project root within the repo"
   type        = string
   default     = null
+}
+
+variable "sentry_platform" {
+  description = "The platform for the Sentry project."
+  type        = string
+  default     = "javascript-nextjs"
+}
+
+variable "sentry_organization_slug" {
+  description = "The slug of the Sentry organization."
+  type        = string
+  default     = null
+
+  validation {
+    condition     = !var.enable_sentry || var.sentry_organization_slug != null
+    error_message = "sentry_organization_slug must be provided when enable_sentry is true."
+  }
+}
+
+variable "sentry_team_slug" {
+  description = "The slug of the Sentry team."
+  type        = string
+  default     = null
+
+  validation {
+    condition     = !var.enable_sentry || var.sentry_team_slug != null
+    error_message = "sentry_team_slug must be provided when enable_sentry is true."
+  }
 }
 
 variable "skew_protection" {

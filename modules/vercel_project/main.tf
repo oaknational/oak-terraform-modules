@@ -27,7 +27,44 @@ locals {
     ] })
   ]
 
-  all_env_vars = concat(var.environment_variables, local.custom_env_vars)
+  sentry_vars = concat(
+    var.enable_sentry ? [
+      {
+        key       = "SENTRY_DSN"
+        value     = module.sentry[0].dsn
+        target    = ["production", "preview"]
+        sensitive = true
+      }
+    ] : [],
+    var.enable_sentry ? [
+      for env in ["production", "preview"] : {
+        key       = "SENTRY_ENVIRONMENT"
+        value     = env
+        target    = [env]
+        sensitive = false
+      }
+    ] : [],
+    var.enable_sentry && length(var.custom_environments) > 0 ? flatten([
+      for ce in var.custom_environments : [
+        {
+          key                    = "SENTRY_DSN"
+          value                  = module.sentry[0].dsn
+          target                 = null
+          sensitive              = true
+          custom_environment_ids = [vercel_custom_environment.this[ce.name].id]
+        },
+        {
+          key                    = "SENTRY_ENVIRONMENT"
+          value                  = ce.name
+          target                 = null
+          sensitive              = false
+          custom_environment_ids = [vercel_custom_environment.this[ce.name].id]
+        }
+      ]
+    ]) : []
+  )
+
+  all_env_vars = concat(var.environment_variables, local.custom_env_vars, local.sentry_vars)
 
   detectify_ips = ["52.17.9.21", "52.17.98.131"]
 
