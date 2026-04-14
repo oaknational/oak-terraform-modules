@@ -1,6 +1,6 @@
 locals {
   gateway_template_map = {
-    for e in var.gateway.entrypoint_map : e.variable => google_cloudfunctions2_function.this[e.entrypoint].url
+    for e in var.gateway.entrypoint_map : e.variable => module.functions[e.entrypoint].url
   }
 }
 

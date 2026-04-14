@@ -107,6 +107,10 @@ variable "functions" {
       name  = string
       value = string
     }))
+    secrets = optional(list(object({
+      env_name    = string
+      secret_name = string
+    })), [])
   }))
   default = []
 
