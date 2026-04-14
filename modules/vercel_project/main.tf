@@ -27,7 +27,28 @@ locals {
     ] })
   ]
 
-  all_env_vars = concat(var.environment_variables, local.custom_env_vars)
+  sentry_vars = var.enable_sentry ? [
+    {
+      key       = "SENTRY_DSN"
+      value     = module.sentry[0].dsn
+      target    = ["production", "preview"]
+      sensitive = true
+    },
+    {
+      key       = "SENTRY_ENVIRONMENT"
+      value     = "production"
+      target    = ["production"]
+      sensitive = false
+    },
+    {
+      key       = "SENTRY_ENVIRONMENT"
+      value     = "preview"
+      target    = ["preview"]
+      sensitive = false
+    }
+  ] : []
+
+  all_env_vars = concat(var.environment_variables, local.custom_env_vars, local.sentry_vars)
 
   detectify_ips = ["52.17.9.21", "52.17.98.131"]
 

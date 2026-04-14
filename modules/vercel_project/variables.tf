@@ -98,6 +98,12 @@ variable "domains" {
   }
 }
 
+variable "enable_sentry" {
+  description = "Whether to create a Sentry project"
+  type        = bool
+  default     = false
+}
+
 variable "environment_variables" {
   description = <<-EOT
     List of environment variable objects.
@@ -210,6 +216,21 @@ variable "root_directory" {
   description = "Path to project root within the repo"
   type        = string
   default     = null
+}
+
+variable "sentry_platform" {
+  description = "The platform for the Sentry project."
+  type        = string
+  default     = "javascript-nextjs"
+}
+
+variable "sentry_organization_slug" {
+  description = "The slug of the Sentry organization."
+  type        = string
+}
+variable "sentry_team_slug" {
+  description = "The slug of the Sentry team."
+  type        = string
 }
 
 variable "skew_protection" {
