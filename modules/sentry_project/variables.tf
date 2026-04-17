@@ -21,5 +21,4 @@ variable "sentry_organization_slug" {
 variable "sentry_team_slug" {
   description = "The slug of the Sentry team."
   type        = string
-  default     = "oak-national-academy"
 }
