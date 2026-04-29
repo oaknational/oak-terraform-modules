@@ -1,0 +1,2 @@
+# Tag cloud-ops for any changes to terraform workflows
+.github/workflows/terraform_*.yml @oaknational/cloud-ops
