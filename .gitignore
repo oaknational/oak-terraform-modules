@@ -1,1 +1,4 @@
 node_modules/
+
+# Do not commit terraform backend config file in public repo
+backend.tf
