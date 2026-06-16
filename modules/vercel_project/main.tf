@@ -89,7 +89,6 @@ resource "vercel_project" "this" {
   install_command                                   = var.install_command
   skew_protection                                   = var.skew_protection
   prioritise_production_builds                      = true
-  protection_bypass_for_automation                  = var.protection_bypass_for_automation
   options_allowlist                                 = local.options_allowlist_obj
   output_directory                                  = var.output_directory
   build_machine_type                                = local.build_machine_type_to_use
@@ -108,6 +107,14 @@ resource "vercel_project" "this" {
   resource_config = {
     function_default_regions = ["lhr1"] // London
   }
+}
+
+resource "vercel_project_protection_bypass" "this" {
+  count = var.protection_bypass_for_automation ? 1 : 0
+
+  project_id = vercel_project.this.id
+  is_env_var = true
+  note       = "Managed by Terraform"
 }
 
 resource "vercel_project_domain" "this" {
