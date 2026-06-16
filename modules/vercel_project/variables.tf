@@ -104,6 +104,12 @@ variable "enable_sentry" {
   default     = false
 }
 
+variable "enable_model_armor" {
+  description = "Whether to inject Model Armor environment variables"
+  type        = bool
+  default     = false
+}
+
 variable "environment_variables" {
   description = <<-EOT
     List of environment variable objects.
@@ -127,6 +133,25 @@ variable "environment_variables" {
       contains(["SENTRY_DSN", "SENTRY_ENVIRONMENT"], ev.key)
     ])
     error_message = "SENTRY_DSN and SENTRY_ENVIRONMENT are managed automatically when enable_sentry is true. Remove them from environment_variables."
+  }
+
+  validation {
+    condition = !var.enable_model_armor || !anytrue([
+      for ev in var.environment_variables :
+      contains([
+        "MODEL_ARMOR_AUTH_MODE",
+        "MODEL_ARMOR_LOCATION",
+        "MODEL_ARMOR_PROJECT_ID",
+        "MODEL_ARMOR_SERVICE_ACCOUNT_EMAIL",
+        "MODEL_ARMOR_TEMPLATE_ID",
+        "MODEL_ARMOR_WORKLOAD_IDENTITY_PROVIDER_NAME",
+        "MODEL_ARMOR_WORKLOAD_IDENTITY_POOL_ID",
+        "MODEL_ARMOR_WORKLOAD_IDENTITY_POOL_PROVIDER_ID",
+        "MODEL_ARMOR_WORKLOAD_IDENTITY_POOL_PROJECT_ID",
+        "MODEL_ARMOR_WORKLOAD_IDENTITY_POOL_PROJECT_NUMBER",
+      ], ev.key)
+    ])
+    error_message = "Model Armor environment variables are managed automatically when enable_model_armor is true. Remove them from environment_variables."
   }
 }
 
@@ -224,6 +249,42 @@ variable "root_directory" {
   description = "Path to project root within the repo"
   type        = string
   default     = null
+}
+
+variable "model_armor" {
+  description = "Per-target Model Armor configuration to inject into Vercel preview and production environments."
+  type = object({
+    preview = object({
+      auth_mode                             = string
+      location                              = string
+      project_id                            = string
+      service_account_email                 = string
+      template_id                           = string
+      workload_identity_provider_name       = string
+      workload_identity_pool_id             = string
+      workload_identity_pool_provider_id    = string
+      workload_identity_pool_project_id     = string
+      workload_identity_pool_project_number = string
+    })
+    production = object({
+      auth_mode                             = string
+      location                              = string
+      project_id                            = string
+      service_account_email                 = string
+      template_id                           = string
+      workload_identity_provider_name       = string
+      workload_identity_pool_id             = string
+      workload_identity_pool_provider_id    = string
+      workload_identity_pool_project_id     = string
+      workload_identity_pool_project_number = string
+    })
+  })
+  default = null
+
+  validation {
+    condition     = !var.enable_model_armor || var.model_armor != null
+    error_message = "model_armor must be provided when enable_model_armor is true."
+  }
 }
 
 variable "sentry_platform" {

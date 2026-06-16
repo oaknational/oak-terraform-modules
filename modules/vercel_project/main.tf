@@ -64,7 +64,75 @@ locals {
     ]) : []
   )
 
-  all_env_vars = concat(var.environment_variables, local.custom_env_vars, local.sentry_vars)
+  model_armor_vars = var.enable_model_armor ? flatten([
+    for target, cfg in {
+      preview    = var.model_armor.preview
+      production = var.model_armor.production
+      } : [
+      {
+        key       = "MODEL_ARMOR_AUTH_MODE"
+        value     = cfg.auth_mode
+        target    = [target]
+        sensitive = false
+      },
+      {
+        key       = "MODEL_ARMOR_LOCATION"
+        value     = cfg.location
+        target    = [target]
+        sensitive = false
+      },
+      {
+        key       = "MODEL_ARMOR_PROJECT_ID"
+        value     = cfg.project_id
+        target    = [target]
+        sensitive = false
+      },
+      {
+        key       = "MODEL_ARMOR_SERVICE_ACCOUNT_EMAIL"
+        value     = cfg.service_account_email
+        target    = [target]
+        sensitive = false
+      },
+      {
+        key       = "MODEL_ARMOR_TEMPLATE_ID"
+        value     = cfg.template_id
+        target    = [target]
+        sensitive = false
+      },
+      {
+        key       = "MODEL_ARMOR_WORKLOAD_IDENTITY_PROVIDER_NAME"
+        value     = cfg.workload_identity_provider_name
+        target    = [target]
+        sensitive = false
+      },
+      {
+        key       = "MODEL_ARMOR_WORKLOAD_IDENTITY_POOL_ID"
+        value     = cfg.workload_identity_pool_id
+        target    = [target]
+        sensitive = false
+      },
+      {
+        key       = "MODEL_ARMOR_WORKLOAD_IDENTITY_POOL_PROVIDER_ID"
+        value     = cfg.workload_identity_pool_provider_id
+        target    = [target]
+        sensitive = false
+      },
+      {
+        key       = "MODEL_ARMOR_WORKLOAD_IDENTITY_POOL_PROJECT_ID"
+        value     = cfg.workload_identity_pool_project_id
+        target    = [target]
+        sensitive = false
+      },
+      {
+        key       = "MODEL_ARMOR_WORKLOAD_IDENTITY_POOL_PROJECT_NUMBER"
+        value     = cfg.workload_identity_pool_project_number
+        target    = [target]
+        sensitive = false
+      }
+    ]
+  ]) : []
+
+  all_env_vars = concat(var.environment_variables, local.custom_env_vars, local.sentry_vars, local.model_armor_vars)
 
   detectify_ips = ["52.17.9.21", "52.17.98.131"]
 
