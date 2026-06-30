@@ -8,9 +8,12 @@ variable "platform" {
   }
 }
 
-variable "repo_name" {
-  description = "The name of the Sentry project.This should be the repo name."
-  type        = string
+variable "name_parts" {
+  description = "The parts that make up the name. By convention this is the Git repo name and a suffix"
+  type = object({
+    git_repo = string
+    suffix   = string
+  })
 }
 
 variable "sentry_organization_slug" {
