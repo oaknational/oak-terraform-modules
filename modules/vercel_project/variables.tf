@@ -48,7 +48,8 @@ variable "custom_environments" {
 
   validation {
     condition = alltrue([
-      for env in var.custom_environments : can(regex("${var.cloudflare_zone_domain}$", env.domain))
+      for env in var.custom_environments :
+      env.domain == var.cloudflare_zone_domain || endswith(env.domain, ".${var.cloudflare_zone_domain}")
     ])
     error_message = <<-EOT
       Domain must end with '${var.cloudflare_zone_domain}'
@@ -89,7 +90,7 @@ variable "domains" {
   validation {
     condition = alltrue([
       for domain in var.domains :
-      can(regex("${var.cloudflare_zone_domain}$", domain))
+      domain == var.cloudflare_zone_domain || endswith(domain, ".${var.cloudflare_zone_domain}")
     ])
     error_message = <<-EOT
       Domain must end with '${var.cloudflare_zone_domain}'
