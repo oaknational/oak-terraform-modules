@@ -19,8 +19,8 @@ variable "name_parts" {
   }
 
   validation {
-    condition     = can(regex("^[a-z-]+$", join("-", values(var.name_parts))))
-    error_message = "Name parts should only contain lowercase letters or -"
+    condition     = can(regex("^[a-z0-9-]+$", join("-", values(var.name_parts))))
+    error_message = "Name parts should only contain lowercase letters, numbers, or -"
   }
 }
 
