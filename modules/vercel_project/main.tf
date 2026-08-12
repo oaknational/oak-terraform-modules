@@ -93,6 +93,7 @@ resource "vercel_project" "this" {
   options_allowlist                                 = local.options_allowlist_obj
   output_directory                                  = var.output_directory
   build_machine_type                                = local.build_machine_type_to_use
+  auto_assign_custom_domains                        = var.auto_assign_custom_domains
 
   vercel_authentication = {
     deployment_type = local.deployment_type

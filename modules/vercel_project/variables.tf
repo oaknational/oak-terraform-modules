@@ -264,3 +264,9 @@ variable "cloudflare_zone_domain" {
   description = "Domain name for the zone"
   type        = string
 }
+
+variable "auto_assign_custom_domains" {
+  description = "Automatically assign custom production domains after each Production deployment (auto-promote)."
+  type        = bool
+  default     = true
+}
