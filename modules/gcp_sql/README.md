@@ -33,3 +33,7 @@ module "instance" {
   vpc_network_link    = "projects/example-project/global/networks/example-vpc"
 }
 ```
+
+`name_parts.app` and `name_parts.resource` are both optional, but at least one of them must be set —
+the instance name is built from whichever parts are provided (`domain`, `env`, `region`, `app`, `resource`),
+so a config can identify an instance by `app`, by `resource`, or by both.
