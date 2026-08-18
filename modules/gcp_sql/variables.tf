@@ -3,8 +3,8 @@ variable "name_parts" {
   type = object({
     domain   = string
     region   = optional(string, "ldn")
-    app      = string
-    resource = string
+    app      = optional(string, "")
+    resource = optional(string, "")
   })
   nullable = false
 
@@ -14,13 +14,23 @@ variable "name_parts" {
   }
 
   validation {
-    condition     = can(regex("^[a-z]{3}$", var.name_parts.region))
-    error_message = "Region part of the name should be exactly 3 lowercase chars"
+    condition     = can(regex("^[a-z0-9]+$", var.name_parts.region))
+    error_message = "Region part of the name should only contain lowercase letters and numbers (no hyphens)"
   }
 
   validation {
-    condition     = can(regex("^[a-z0-9-]+$", join("-", values(var.name_parts))))
-    error_message = "Name parts should only contain lowercase letters, numbers, or -"
+    condition     = can(regex("^[a-z0-9]*$", var.name_parts.app))
+    error_message = "App part of the name should only contain lowercase letters and numbers (no hyphens)"
+  }
+
+  validation {
+    condition     = can(regex("^[a-z0-9]*$", var.name_parts.resource))
+    error_message = "Resource part of the name should only contain lowercase letters and numbers (no hyphens)"
+  }
+
+  validation {
+    condition     = trimspace(var.name_parts.app) != "" || trimspace(var.name_parts.resource) != ""
+    error_message = "At least one of name_parts.app or name_parts.resource must be non-empty"
   }
 }
 

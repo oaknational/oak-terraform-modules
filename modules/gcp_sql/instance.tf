@@ -7,9 +7,9 @@ locals {
     "16"  = "db-custom-4-16384" # 4 vCPU
   }
 
-  name = join("-", [
+  name = join("-", compact([
     var.name_parts.domain, var.env, var.name_parts.region, var.name_parts.app, var.name_parts.resource
-  ])
+  ]))
 
   authorized_network_records = {
     for an in var.authorized_networks : an.cidr => an.description
@@ -103,4 +103,3 @@ resource "google_storage_bucket_iam_member" "this" {
   role   = "roles/storage.objectAdmin"
   member = "serviceAccount:${google_sql_database_instance.this.service_account_email_address}"
 }
-
