@@ -33,7 +33,7 @@ locals {
         key       = "SENTRY_DSN"
         value     = module.sentry[0].sentry_dsn
         target    = ["production", "preview"]
-        sensitive = true
+        sensitive = false
       }
     ] : [],
     var.enable_sentry ? [
