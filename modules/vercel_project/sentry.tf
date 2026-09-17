@@ -7,7 +7,7 @@ module "sentry" {
     suffix   = var.build_type
   }
 
-  platform                 = var.sentry_platform
   sentry_organization_slug = var.sentry_organization_slug
   sentry_team_slug         = var.sentry_team_slug
+  platform                 = var.sentry_platform
 }
