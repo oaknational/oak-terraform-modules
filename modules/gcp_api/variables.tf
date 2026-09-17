@@ -29,6 +29,11 @@ variable "enable_sentry" {
   default     = false
 }
 
+variable "sentry_organization_slug" {
+  description = "The slug of the Sentry organisation."
+  type        = string
+}
+
 variable "sentry_tf_workspace" {
   description = "The Terraform workspace for the creation of the Sentry project."
   type        = string
