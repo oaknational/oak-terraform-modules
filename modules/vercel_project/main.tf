@@ -50,7 +50,7 @@ locals {
           key                    = "SENTRY_DSN"
           value                  = module.sentry[0].sentry_dsn
           target                 = null
-          sensitive              = true
+          sensitive              = false
           custom_environment_ids = [vercel_custom_environment.this[ce.name].id]
         },
         {
