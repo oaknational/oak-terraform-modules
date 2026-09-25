@@ -31,9 +31,9 @@ locals {
     var.enable_sentry ? [
       {
         key       = "SENTRY_DSN"
-        value     = module.sentry[0].dsn
+        value     = module.sentry[0].sentry_dsn
         target    = ["production", "preview"]
-        sensitive = true
+        sensitive = false
       }
     ] : [],
     var.enable_sentry ? [
@@ -48,9 +48,9 @@ locals {
       for ce in var.custom_environments : [
         {
           key                    = "SENTRY_DSN"
-          value                  = module.sentry[0].dsn
+          value                  = module.sentry[0].sentry_dsn
           target                 = null
-          sensitive              = true
+          sensitive              = false
           custom_environment_ids = [vercel_custom_environment.this[ce.name].id]
         },
         {

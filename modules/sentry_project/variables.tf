@@ -17,7 +17,7 @@ variable "name_parts" {
 }
 
 variable "sentry_organization_slug" {
-  description = "The slug of the Sentry organization."
+  description = "The slug of the Sentry organisation."
   type        = string
 }
 
