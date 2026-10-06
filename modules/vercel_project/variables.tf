@@ -233,10 +233,8 @@ variable "sentry_platform" {
 }
 
 variable "sentry_organization_slug" {
-  description = "The slug of the Sentry organization."
+  description = "The slug of the Sentry organisation."
   type        = string
-  default     = null
-
   validation {
     condition     = !var.enable_sentry || var.sentry_organization_slug != null
     error_message = "sentry_organization_slug must be provided when enable_sentry is true."

@@ -2,6 +2,21 @@
 
 Deploys one or more Cloud run functions via an API gateway to a domain.
 
+## Enabling Sentry
+
+In order to enable Sentry on a `gcp_api` project, you **must** first create a new workspace in Terraform that is responsible for the creation and management of the Sentry project.
+
+There are then three additional variables in use in this project:
+
+- `enable_sentry`
+  - Whether to enable Sentry error tracking. In this case, where we want to use Sentry, we should set this to `true`.
+- `sentry_tf_workspace`
+  - This is the name of the Terraform workspace that was used for the creation of the Sentry project.
+
+Items in the correct Terraform project will automatically apply the correct values for:
+
+- `sentry_organization_slug`
+
 ## Example
 
 ### The Open API YAML file

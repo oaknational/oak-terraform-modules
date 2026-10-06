@@ -23,6 +23,22 @@ variable "name_parts" {
   }
 }
 
+variable "enable_sentry" {
+  description = "Whether to enable Sentry error tracking."
+  type        = bool
+  default     = false
+}
+
+variable "sentry_organization_slug" {
+  description = "The slug of the Sentry organisation."
+  type        = string
+}
+
+variable "sentry_tf_workspace" {
+  description = "The Terraform workspace for the creation of the Sentry project."
+  type        = string
+}
+
 variable "env" {
   description = "The environment"
   type        = string

@@ -4,7 +4,7 @@ terraform {
   required_providers {
     sentry = {
       source  = "jianyuan/sentry"
-      version = "0.15.0-beta1"
+      version = "0.15.7"
     }
   }
 }
