@@ -1,5 +1,6 @@
 data "terraform_remote_state" "sentry_project" {
   backend = "remote"
+  count = var.enable_sentry ? 1 : 0
 
   config = {
     organization = var.sentry_organization_slug
@@ -13,7 +14,7 @@ locals {
   sentry_env_vars = var.enable_sentry ? [
     {
       name  = "SENTRY_DSN"
-      value = data.terraform_remote_state.sentry_project.outputs.sentry_dsn
+      value = data.terraform_remote_state.sentry_project[0].outputs.sentry_dsn
     },
     {
       name  = "SENTRY_ENVIRONMENT"
