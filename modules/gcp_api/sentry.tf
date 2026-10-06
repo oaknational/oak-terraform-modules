@@ -1,6 +1,6 @@
 data "terraform_remote_state" "sentry_project" {
   backend = "remote"
-  count = var.enable_sentry ? 1 : 0
+  count   = var.enable_sentry ? 1 : 0
 
   config = {
     organization = var.sentry_organization_slug
