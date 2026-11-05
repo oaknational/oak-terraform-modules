@@ -31,7 +31,7 @@ module "hosting" {
   functions = [for ep in local.entrypoints : {
     entrypoint = ep
 
-    runtime       = "nodejs20"
+    runtime       = "nodejs24"
     source_object = "demo/index.zip"
 
     max_instance_count      = 1
