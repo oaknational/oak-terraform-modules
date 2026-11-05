@@ -82,7 +82,7 @@ module "example_api" {
   functions = [for ep in local.entrypoints : merge(
     { entrypoint = ep },
     {
-      runtime       = "nodejs20"
+      runtime       = "nodejs24"
       source_object = "example/api.zip"
 
       service_account_email = "example-api@example-project.iam.gserviceaccount.com"

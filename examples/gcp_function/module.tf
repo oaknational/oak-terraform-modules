@@ -14,9 +14,9 @@ module "hosting" {
   function_source_bucket = "example-code-storage-bucket"
 
   entrypoint    = "example_function"
-  runtime       = "nodejs20"
-  source_object = "example/api_${var.tag_id}.zip" 
-  
+  runtime       = "nodejs24"
+  source_object = "example/api_${var.tag_id}.zip"
+
   service_account_email = var.service_account_email
 
   environment_variables = [
@@ -25,7 +25,7 @@ module "hosting" {
       value = var.env,
     },
   ]
-  
+
   secrets = [
     {
       env_name    = "APP_SIGNING_KEY"

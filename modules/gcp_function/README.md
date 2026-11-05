@@ -20,7 +20,7 @@ module "example_api" {
   function_source_bucket = "example-code-storage-bucket"
 
   entrypoint    = "example_function"
-  runtime       = "nodejs20"
+  runtime       = "nodejs24"
   source_object = "example/api.zip" 
   
   service_account_email = "example-api@example-project.iam.gserviceaccount.com"
