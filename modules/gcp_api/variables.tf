@@ -23,6 +23,12 @@ variable "name_parts" {
   }
 }
 
+variable "enable_sentry" {
+  description = "Whether to enable Sentry error tracking."
+  type        = bool
+  default     = false
+}
+
 variable "env" {
   description = "The environment"
   type        = string
@@ -166,4 +172,10 @@ variable "gateway" {
     }))
   })
   nullable = true
+}
+
+variable "sentry_dsn" {
+  description = "Sentry DSN"
+  type        = string
+  sensitive   = true
 }

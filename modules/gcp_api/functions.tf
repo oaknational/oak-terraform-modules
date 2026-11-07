@@ -22,7 +22,7 @@ module "functions" {
   available_cpu           = each.value.available_cpu
   max_request_concurrency = each.value.max_request_concurrency
   service_account_email   = each.value.service_account_email
-  environment_variables   = each.value.environment_variables
+  environment_variables   = concat(each.value.environment_variables, local.sentry_env_vars)
   secrets                 = each.value.secrets
 
   description = "The API endpoint for ${var.env} ${join(" ", split("-", var.name_parts.app))}, ${each.key}"
